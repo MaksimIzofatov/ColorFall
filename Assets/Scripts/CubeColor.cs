@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class CubeColor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    private Renderer _renderer;
+    private void Start()
     {
-        
+        _renderer = GetComponent<Renderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeColor(Color newColor, float duration)
     {
+        StartCoroutine(ChangeColorCoroutine(newColor, duration));
+    }
+
+    private IEnumerator ChangeColorCoroutine(Color newColor, float duration)
+    {
+        var currentTime = 0f;
+        while (currentTime <= duration)
+        {
+            _renderer.material.color = Color.Lerp(_renderer.material.color, newColor, currentTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
         
     }
 }
